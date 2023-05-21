@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Logoimg from './assets/logo.png'
-import Playimg from './assets/seta_play.png'
-import Turnimg from './assets/seta_virar.png'
+import Logoimg from './assets/logo.png';
+import Playimg from './assets/seta_play.png';
+import Turnimg from './assets/seta_virar.png';
+import Erroimg from './assets/icone_erro.png';
+import Quaseimg from './assets/icone_quase.png';
+import Acertoimg from './assets/icone_certo.png';
+
 function App() {
   const [cards, setCards] = useState([
     { question: "O que é JSX?", answer: "Uma extensão da linguagem JavaScript" },
@@ -17,8 +21,9 @@ function App() {
   const [cardsResp, setCardsResp] = useState([])
   const [cardSel, setCardSel] = useState(-1);
   const [showAns, setShowAns] = useState(false);
+  const [totalResp, setTotalResp] = useState(0);
   function respCard(p){
-    if(cardSel === -1){
+    if(cardSel === -1 && !cardsResp[p] && cardsResp[p]!== 0){
       setCardSel(p); 
     return;     
     }
@@ -26,6 +31,17 @@ function App() {
       setShowAns(true);
     }   
   }
+  function finalizaCard(p){
+    const newCardsResp = [...cardsResp];
+    const newTotalResp = totalResp + 1;
+    newCardsResp[cardSel] = p;
+    setCardsResp(newCardsResp);
+    setCardSel(-1);
+    setTotalResp(newTotalResp);
+    setShowAns(false);   
+  }
+  
+  
   return (
       <>
       <SCLogo>
@@ -34,19 +50,20 @@ function App() {
       </SCLogo>
 
       <SCContainerCards>
-        {cards.map( (card,index) => <SCCard key={card.question} hideImg={showAns && index === cardSel} sel={index === cardSel ? true : false}>
+        {cards.map( (card,index) => <SCCard key={card.question} hideImg={showAns && index === cardSel} sel={index === cardSel ? true : false}
+         respondido={!cardsResp[index] ? false : true} color={cardsResp[index]}>
           {index !== cardSel ? `Pergunta ${index+1}` : showAns ? card.answer : card.question}
           {showAns && cardSel === index ? 
             <SCButContainer>
-              <SCRedbut>Não<br></br>lembrei</SCRedbut>
-              <SCOrgbut>Quase não lembrei</SCOrgbut>
-              <SCGrebut>Zap!</SCGrebut>
+              <SCRedbut onClick={()=>finalizaCard("#FF3030")}>Não<br></br>lembrei</SCRedbut>
+              <SCOrgbut onClick={()=>finalizaCard("#FF922E")}>Quase não lembrei</SCOrgbut>
+              <SCGrebut onClick={()=>finalizaCard("#2FBE34")}>Zap!</SCGrebut>
             </SCButContainer> :""}
-          <img src={index == cardSel ? Turnimg : Playimg} onClick={()=>respCard(index)}/>
+          <img src={index == cardSel ? Turnimg : !cardsResp[index] ? Playimg : cardsResp[index] === "#FF3030" ? Erroimg : cardsResp[index] === "#FF922E" ? Quaseimg : Acertoimg} onClick={()=>respCard(index)}/>
           </SCCard>)}
       </SCContainerCards>
 
-      <SCFooter>{cardsResp.length}/{cards.length} CONCLUÍDOS</SCFooter>
+      <SCFooter>{totalResp}/{cards.length} CONCLUÍDOS</SCFooter>
       </>
   );
 }
@@ -124,7 +141,7 @@ const SCCard = styled.div`
   font-weight: 700;
   font-size: 16px;
   line-height: 19px;
-  color: #333333;
+  color:${(props) => !props.respondido ? "#333333" : props.color} ;
   display:flex;
   flex-direction:${(props) => props.hideImg ? "column" : "row"};
   justify-content:space-between;
@@ -137,6 +154,7 @@ const SCCard = styled.div`
     height:${(props) => !props.sel ? "auto" : (props) => props.hideImg ? "0px" : "20px"};
     padding-top:${(props) => !props.sel ? "0px": (props) => props.hideImg ? "0px" :"82px"};
   }
+  text-decoration:${(props) => props.respondido ? "line-through" : "none"};
 `;
 
 const SCContainerCards = styled.div`
@@ -144,7 +162,7 @@ const SCContainerCards = styled.div`
   height:100%;
   display:flex;
   flex-direction:column;
-  overflow-y:scroll;
+  overflow-y:hidden;
   gap:25px;
   align-items:center;
   margin-bottom:95px;

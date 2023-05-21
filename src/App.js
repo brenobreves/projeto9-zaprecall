@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Logoimg from './assets/logo.png';
 import Playimg from './assets/seta_play.png';
 import Turnimg from './assets/seta_virar.png';
 import Erroimg from './assets/icone_erro.png';
 import Quaseimg from './assets/icone_quase.png';
 import Acertoimg from './assets/icone_certo.png';
+import Logo from './Logo';
+import Footer from './Footer';
 
 function App() {
   const [cards, setCards] = useState([
@@ -44,11 +45,7 @@ function App() {
   
   return (
       <>
-      <SCLogo>
-        <img src={Logoimg}/>
-        ZapRecall
-      </SCLogo>
-
+      <Logo></Logo>
       <SCContainerCards>
         {cards.map( (card,index) => <SCCard key={card.question} hideImg={showAns && index === cardSel} sel={index === cardSel ? true : false}
          respondido={!cardsResp[index] ? false : true} color={cardsResp[index]}>
@@ -62,8 +59,7 @@ function App() {
           <img src={index == cardSel ? Turnimg : !cardsResp[index] ? Playimg : cardsResp[index] === "#FF3030" ? Erroimg : cardsResp[index] === "#FF922E" ? Quaseimg : Acertoimg} onClick={()=>respCard(index)}/>
           </SCCard>)}
       </SCContainerCards>
-
-      <SCFooter>{totalResp}/{cards.length} CONCLUÍDOS</SCFooter>
+      <Footer totalResp={totalResp} qtdCards={cards.length}></Footer>
       </>
   );
 }
@@ -152,7 +148,7 @@ const SCCard = styled.div`
   img{
     width: ${(props) => !props.sel ? "auto" : (props) => props.hideImg ? "0px" : "30px"};
     height:${(props) => !props.sel ? "auto" : (props) => props.hideImg ? "0px" : "20px"};
-    padding-top:${(props) => !props.sel ? "0px": (props) => props.hideImg ? "0px" :"82px"};
+    margin-top:${(props) => !props.sel ? "0px": (props) => props.hideImg ? "0px" :"82px"};
   }
   text-decoration:${(props) => props.respondido ? "line-through" : "none"};
 `;
@@ -166,45 +162,4 @@ const SCContainerCards = styled.div`
   gap:25px;
   align-items:center;
   margin-bottom:95px;
-`;
-
-const SCLogo = styled.div`
-  width:  100%;
-  height: 100%;
-  background-color: #FB6B6B;
-  display: flex;
-  justify-content:center;
-  margin-top:42px;
-  img{
-    width:52px;
-    height:60px;
-  }
-  font-family: 'Righteous';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 36px;
-  line-height: 60px;
-  text-align: center;
-  letter-spacing: -0.012em;
-  color: #FFFFFF;
-  gap:20px;
-  margin-bottom:50px;
-`;
-
-const SCFooter = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 70px;
-  bottom:0;
-  background-color: #FFFFFF;
-  box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
-  font-family: 'Recursive';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  line-height: 22px;
-  color: #333333;
-  display:flex;
-  align-items:center;
-  justify-content: center;
 `;

@@ -16,11 +16,15 @@ function App() {
   ])
   const [cardsResp, setCardsResp] = useState([])
   const [cardSel, setCardSel] = useState(-1);
+  const [showAns, setShowAns] = useState(false);
   function respCard(p){
     if(cardSel === -1){
-    setCardSel(p); 
-    return;    
+      setCardSel(p); 
+    return;     
     }
+    if(cardSel === p){
+      setShowAns(true);
+    }   
   }
   return (
       <>
@@ -30,8 +34,14 @@ function App() {
       </SCLogo>
 
       <SCContainerCards>
-        {cards.map( (card,index) => <SCCard key={card.question} sel={index === cardSel ? true : false}>
-          {index === cardSel ? card.question : `Pergunta ${index+1}`}
+        {cards.map( (card,index) => <SCCard key={card.question} hideImg={showAns && index === cardSel} sel={index === cardSel ? true : false}>
+          {index !== cardSel ? `Pergunta ${index+1}` : showAns ? card.answer : card.question}
+          {showAns && cardSel === index ? 
+            <SCButContainer>
+              <SCRedbut>Não<br></br>lembrei</SCRedbut>
+              <SCOrgbut>Quase não lembrei</SCOrgbut>
+              <SCGrebut>Zap!</SCGrebut>
+            </SCButContainer> :""}
           <img src={index == cardSel ? Turnimg : Playimg} onClick={()=>respCard(index)}/>
           </SCCard>)}
       </SCContainerCards>
@@ -42,6 +52,66 @@ function App() {
 }
 
 export default App;
+
+const SCButContainer = styled.div`
+  display:flex;
+  flex-direction: row;
+  gap:8px;
+  justify-content:center;
+  align-items:center;
+`;
+
+const SCRedbut = styled.button`
+  width: 85.17px;
+  height: 37.17px;
+  background-color: #FF3030;
+  border-radius: 5px;
+  border:none;
+  font-family: 'Recursive';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+`;
+const SCOrgbut = styled.button`
+  width: 85.17px;
+  height: 37.17px;
+  background-color: #FF922E;
+  border-radius: 5px;
+  border:none;
+  font-family: 'Recursive';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+`;
+const SCGrebut = styled.button`
+  width: 85.17px;
+  height: 37.17px;
+  background-color: #2FBE34;
+  border-radius: 5px;
+  border:none;
+  font-family: 'Recursive';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+`;
 
 const SCCard = styled.div`
   width: 300px;
@@ -56,15 +126,16 @@ const SCCard = styled.div`
   line-height: 19px;
   color: #333333;
   display:flex;
+  flex-direction:${(props) => props.hideImg ? "column" : "row"};
   justify-content:space-between;
   align-items:${(props) => props.sel ? "top" :"center"};
   padding-left:15px;
   padding-right:15px;
   padding-top:${(props) => props.sel ? "18px" :"0px"};
   img{
-    width: ${(props) => props.sel ? "30px" :"auto"};
-    height:${(props) => props.sel ? "20px" :"auto"};
-    padding-top:${(props) => props.sel ? "82px" :"0px"};
+    width: ${(props) => !props.sel ? "auto" : (props) => props.hideImg ? "0px" : "30px"};
+    height:${(props) => !props.sel ? "auto" : (props) => props.hideImg ? "0px" : "20px"};
+    padding-top:${(props) => !props.sel ? "0px": (props) => props.hideImg ? "0px" :"82px"};
   }
 `;
 

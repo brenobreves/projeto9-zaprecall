@@ -15,9 +15,9 @@ function BContainer({cardsResp , totalResp , cardSel , setCardsResp , setCardSel
 
     return(
         <SCButContainer>
-          <SCRedbut onClick={()=>finalizaCard("#FF3030")}>Não<br></br>lembrei</SCRedbut>
-          <SCOrgbut onClick={()=>finalizaCard("#FF922E")}>Quase não lembrei</SCOrgbut>
-          <SCGrebut onClick={()=>finalizaCard("#2FBE34")}>Zap!</SCGrebut>
+          <SCRedbut data-test="no-btn" onClick={()=>finalizaCard("#FF3030")}>Não<br></br>lembrei</SCRedbut>
+          <SCOrgbut data-test="partial-btn" onClick={()=>finalizaCard("#FF922E")}>Quase não lembrei</SCOrgbut>
+          <SCGrebut data-test="zap-btn" onClick={()=>finalizaCard("#2FBE34")}>Zap!</SCGrebut>
         </SCButContainer>
     );
 }

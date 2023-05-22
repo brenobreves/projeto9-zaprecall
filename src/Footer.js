@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 function Footer({totalResp , qtdCards}){
     return(
-        <SCFooter>{totalResp}/{qtdCards} CONCLUÍDOS</SCFooter>
+        <SCFooter data-test="footer">{totalResp}/{qtdCards} CONCLUÍDOS</SCFooter>
     );
 }
 

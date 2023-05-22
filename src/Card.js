@@ -23,18 +23,19 @@ function Card({card , index , totalResp , setTotalResp , cardsResp , setCardsRes
     
     return(
         <SCCard 
+          data-test="flashcard"
           hideImg={showAns && index === cardSel} 
           sel={index === cardSel ? true : false}
           respondido={!cardsResp[index] ? false : true} 
           colorResp={cardsResp[index]}>
 
-          {index !== cardSel ? `Pergunta ${index+1}` : showAns ? card.answer : card.question}
+          <span data-test="flashcard-text">{index !== cardSel ? `Pergunta ${index+1}` : showAns ? card.answer : card.question}</span>
 
           {showAns && cardSel === index ? 
           <BContainer cardsResp={cardsResp} totalResp={totalResp} cardSel={cardSel} setCardsResp={setCardsResp} setCardSel={setCardSel}
           setTotalResp={setTotalResp} setShowAns={setShowAns}></BContainer>:""}
           
-          <img src={index == cardSel ? Turnimg : !cardsResp[index] ? Playimg : cardsResp[index] === "#FF3030" ? Erroimg : cardsResp[index] === "#FF922E" ? Quaseimg : Acertoimg}
+          <img data-test="play-btn turn-btn no-icon partial-icon zap-icon" src={index == cardSel ? Turnimg : !cardsResp[index] ? Playimg : cardsResp[index] === "#FF3030" ? Erroimg : cardsResp[index] === "#FF922E" ? Quaseimg : Acertoimg}
           onClick={()=>respCard(index)}/>        
         </SCCard>
     );

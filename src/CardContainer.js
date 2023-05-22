@@ -3,9 +3,14 @@ import styled from 'styled-components';
 import Card from './Card';
 
 function CardContainer({cards , totalResp , setTotalResp}){
+    
+    const [cardsResp, setCardsResp] = useState([]);
+    const [cardSel, setCardSel] = useState(-1);
+    
     return(
         <SCContainerCards>
-            {cards.map( (card,index) => <Card key={card.question} card={card} index={index} totalResp={totalResp} setTotalResp={setTotalResp}></Card> )}
+            {cards.map( (card,index) => <Card key={card.question} card={card} index={index} totalResp={totalResp} setTotalResp={setTotalResp}
+            cardsResp={cardsResp} setCardsResp={setCardsResp} cardSel={cardSel} setCardSel={setCardSel}></Card> )}
         </SCContainerCards>
     );
 }

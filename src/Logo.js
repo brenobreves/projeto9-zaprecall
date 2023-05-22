@@ -4,11 +4,12 @@ import Logoimg from './assets/logo.png';
 function Logo(){
     return(
         <SCLogo>
-        <img src={Logoimg}/>
-        ZapRecall
-      </SCLogo>
+            <img src={Logoimg}/>
+            ZapRecall
+        </SCLogo>
     );
 }
+
 export default Logo;
 
 const SCLogo = styled.div`
